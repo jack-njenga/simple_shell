@@ -11,8 +11,8 @@
 int main(int argc, char *argv[], char *envp[])
 {
 	char *buffer = NULL, *str, *arg[2];
-	size_t size = 0, get, ret;
-	int i;
+	size_t size = 0;
+	int i, get, ret;
 
 	while (1)
 	{
@@ -20,47 +20,31 @@ int main(int argc, char *argv[], char *envp[])
 		get = getline(&buffer, &size, stdin);
 		if (get == -1)
 		{
-			perror(":");
+			free(buffer);
 			return (1);
 		}
-		str = strtok(buffer, " \n");
-
+		str = strtok(buffer, "\n");
 		while (str != NULL)
 		{
 			arg[0] = str;
 			arg[1] = NULL;
-		
-			if (i == 1)
-			{
-				break;
-			}
 			ret = fork();
 			if (ret == -1)
-			{
 				perror("");
-			}
 			else if (ret == 0)
 			{
 				if (execve(str, arg, envp) == -1)
 				{
-					perror("");
+					perror("./s");
+					free(buffer);
+					return (1);
 				}
 			}
 			else
-			{
 				wait(NULL);
-			}
-			
-			i++;
-			free(buffer);
-			buffer = NULL;
-			size = 0;
-			str = strtok(NULL, " \n");
+			str = strtok(NULL, "\n");
 		}
 	}
-
-	printf("DONE");
 	free(buffer);
 	return (0);
-
 }

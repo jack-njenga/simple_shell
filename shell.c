@@ -20,8 +20,16 @@ int main(int argc, char *argv[], char *envp[])
 		get = getline(&buffer, &size, stdin);
 		if (get == -1)
 		{
-			free(buffer);
-			return (1);
+			if (errno == EOF)
+			{
+				free(buffer);
+				return (0);
+			}
+			else
+			{
+				free(buffer);
+				return (1);
+			}
 		}
 		str = strtok(buffer, "\n");
 		while (str != NULL)

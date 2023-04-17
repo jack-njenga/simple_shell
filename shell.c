@@ -4,22 +4,22 @@
  * @argc: argument counter
  * @argv: argument vector
  * @envp: environment
- *
  * Return: 0 on success otherwise on Error
  */
 
 int main(int argc, char *argv[], char *envp[])
 {
-	char *buffer = NULL, *str, *arg[2];
+	char *buffer = NULL, *str, *arr[6], *dell = " \n";
 	size_t size = 0;
-	int i, get, ret;
+	int i, get, ret, n = 0;
+	char *env[] = {"PATH=/usr/local/bin:/usr/bin:/bin", NULL};
 
+	printf("%s\n", envp[0]);
 	while (1)
 	{
 		printf("#cisfun$ ");
 		get = getline(&buffer, &size, stdin);
 		if (get == -1)
-		{
 			if (errno == EOF)
 			{
 				free(buffer);
@@ -30,27 +30,9 @@ int main(int argc, char *argv[], char *envp[])
 				free(buffer);
 				return (1);
 			}
-		}
-		str = strtok(buffer, "\n");
-		while (str != NULL)
+		if (argument(buffer, dell, env) == 1)
 		{
-			arg[0] = str;
-			arg[1] = NULL;
-			ret = fork();
-			if (ret == -1)
-				perror("");
-			else if (ret == 0)
-			{
-				if (execve(str, arg, envp) == -1)
-				{
-					perror("./s");
-					free(buffer);
-					return (1);
-				}
-			}
-			else
-				wait(NULL);
-			str = strtok(NULL, "\n");
+			return (1);
 		}
 	}
 	free(buffer);

@@ -9,4 +9,6 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+int argument(char *buffer, char *dell, char *envp[]);
+
 #endif

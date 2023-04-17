@@ -1,5 +1,11 @@
 #include "main.h"
 /**
+ * argument - handles command line arguments
+ * @buffer: buffer
+ * @dell: delimiter
+ * @envp: environment
+ *
+ * Return: 1 on failure and 0 on success
  */
 int argument(char *buffer, char *dell, char *envp[])
 {

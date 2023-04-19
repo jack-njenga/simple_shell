@@ -34,6 +34,7 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			return (1);
 		}
+		system("export PATH=$PATH:/bin/");
 	}
 	free(buffer);
 	return (0);

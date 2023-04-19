@@ -57,10 +57,10 @@ int main(void)
     char *full_path;
     while (1)
     {
-        printf("$ ");
+        write(STDOUT_FILENO, "$ ", 2);
         if (fgets(cmd, MAX_CMD_LEN, stdin) == NULL)
         {
-            printf("\n");
+            write(STDOUT_FILENO, "\n", 1);
             exit(0);
         }
         cmd[strcspn(cmd, "\n")] = '\0';
@@ -81,7 +81,8 @@ int main(void)
             {
                 for (i = 0; environ[i] != NULL; i++)
                 {
-                    printf("%s\n", environ[i]);
+                    write(STDOUT_FILENO, environ[i], strlen(environ[i]));
+                    write(STDOUT_FILENO, "\n", 1);
                 }
             }
             else
@@ -92,9 +93,9 @@ int main(void)
                     pid = fork();
                     if (pid == 0)
                     {
-                        if (execv(full_path, args) == -1)
+                        if (execve(full_path, args, environ) == -1)
                         {
-                            fprintf(stderr, "%s: command not found\n", args[0]);
+                            perror(args[0]);
                             exit(1);
                         }
                     }
@@ -106,7 +107,7 @@ int main(void)
                 }
                 else
                 {
-                    fprintf(stderr, "%s: command not found\n", args[0]);
+                    perror(args[0]);
                 }
             }
         }

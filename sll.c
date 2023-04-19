@@ -18,8 +18,16 @@ char *search_path(char *cmd)
 
     if (cmd[0] == '/')
     {
-        return (strdup(cmd));
+        if (access(cmd, X_OK) == 0)
+        {
+            return (strdup(cmd));
+        }
+        else
+        {
+            return (NULL);
+        }
     }
+
     path = getenv("PATH");
     if (path == NULL)
     {
@@ -97,7 +105,7 @@ int main(void)
                     {
                         if (execve(full_path, args, environ) == -1)
                         {
-                            perror(args[0]);
+                            perror("EXECVE");
                             exit(1);
                         }
                     }

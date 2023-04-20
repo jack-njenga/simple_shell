@@ -1,6 +1,7 @@
 ******* SIMPLE SHELL TEAM PROJECT *******
 
 [Jack](https://github.com/jack-njenga)
+
 [Annet](https://github.com/Annet-Chebukati)
 
 AUTHORS - contains the list of contributers

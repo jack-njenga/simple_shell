@@ -24,7 +24,8 @@ char *search_path(char *cmd)
         }
         else
         {
-            return (NULL);
+           free(cmd);
+	   return (NULL);
         }
     }
 
@@ -118,6 +119,7 @@ int main(void)
                 else
                 {
                     perror(args[0]);
+		    free(full_path);
                 }
             }
         }

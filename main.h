@@ -10,5 +10,6 @@
 #include <errno.h>
 
 int argument(char *buffer, char *dell, char *envp[]);
+char *check_path(char *command);
 
 #endif

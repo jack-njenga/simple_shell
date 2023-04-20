@@ -13,7 +13,7 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char *arg[], ch
 	pid_t pid;
 	int status;
 
-	while (1)
+	while (true)
 	{
 		write(STDOUT_FILENO, "cisfun$ ", 8);
 		if (getline(&buffer, &size, stdin) == -1)
@@ -32,7 +32,10 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char *arg[], ch
 				args[i] = strtok(NULL, del);
 			}
 			if (strcmp(args[0], "exit") == 0)
+			{
+				free(buffer);
 				exit(0);
+			}
 			if (strcmp(args[0], "env") == 0)
 			{
 				for (i = 0; envp[i] != NULL; i++)

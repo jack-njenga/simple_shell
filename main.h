@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <stdbool.h>
 
 int argument(char *buffer, char *dell, char *envp[]);
 char *check_path(char *command);

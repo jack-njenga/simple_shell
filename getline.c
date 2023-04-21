@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "main.h"
 
 #define READ_SIZE 1024
 

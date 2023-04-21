@@ -12,5 +12,6 @@
 
 int argument(char *buffer, char *dell, char *envp[]);
 char *check_path(char *command);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif

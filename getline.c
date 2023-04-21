@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "main.h"
 
 #define READ_SIZE 1024
 
@@ -32,8 +30,9 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
         bytes = read(fileno(stream), buffer, READ_SIZE);
         if (bytes == -1)
             return (-1);
-        if (bytes == 0)
-            break;
+	printf("buffer has :%s\n ret for bytes : %ld\n", buffer, bytes);
+        /*if (bytes == 0 || bytes == strlen(buffer))
+            break;*/
         if (i + bytes >= *n)
         {
             newptr = malloc(sizeof(char) * (*n + READ_SIZE));
@@ -45,8 +44,11 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
             *lineptr = newptr;
             *n += READ_SIZE;
         }
-        for (size_t j = 0; j < bytes; j++)
-            (*lineptr)[i + j] = buffer[j];
+	strcpy(*lineptr, buffer);
+        /*for (size_t j = 0; j < bytes; j++)
+            (*lineptr)[j] = buffer[j];*/
+	if (bytes == 0 || bytes == strlen(buffer))
+		            break;
     }
     (*lineptr)[i] = '\0';
     return (i);

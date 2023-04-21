@@ -16,8 +16,9 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char *arg[], ch
 	while (true)
 	{
 		write(STDOUT_FILENO, "cisfun$ ", 8);
-		if (getline(&buffer, &size, stdin) == -1)
+		if (_getline(&buffer, &size, stdin) == -1)
 		{
+			free(buffer);
 			write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		}

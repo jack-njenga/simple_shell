@@ -1,17 +1,17 @@
 #include "main.h"
-
+int check_keyword(char *args[]);
+void _fork(char *full_path, char *args[], char *env[], int *st);
 /**
+ * main - Entry point of the program(simple shell)
  *
+ * Return: 0 on success else on error.
  */
-int main(__attribute__((unused)) int ac, __attribute__((unused)) char *arg[], char *envp[])
+int main(void)
 {
 	char *buffer = NULL, *args[64];
 	size_t size = 0;
-	int i;
-	char *del = " ";
-	char *fpath;
-	pid_t pid;
-	int status;
+	int i, status;
+	char *del = " ", *fpath;
 
 	while (true)
 	{
@@ -28,41 +28,19 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char *arg[], ch
 			i = 0;
 			args[i] = strtok(buffer, del);
 			while (args[i] != NULL)
-			{
-				i++;
-				args[i] = strtok(NULL, del);
-			}
-			if (strcmp(args[0], "exit") == 0)
+				args[++i] = strtok(NULL, del);
+
+			if (check_keyword(args) == 0)
 			{
 				free(buffer);
 				exit(0);
-			}
-			if (strcmp(args[0], "env") == 0)
-			{
-				for (i = 0; envp[i] != NULL; i++)
-				{
-					write(STDOUT_FILENO, envp[i], strlen(envp[i]));
-					write(STDOUT_FILENO, "\n", 1);
-				}
 			}
 			else
 			{
 				fpath = check_path(args[0]);
 				if (fpath != NULL)
 				{
-					pid = fork();
-					if (pid == 0)
-					{
-						if (execve(fpath, args, envp) == -1)
-						{
-							perror("EXECVE");
-							exit(1);
-						}
-					}
-					else
-					{
-						wait(&status);
-					}
+					_fork(fpath, args, environ, &status);
 					free(fpath);
 				}
 				else
@@ -75,4 +53,53 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char *arg[], ch
 	}
 	free(buffer);
 	return (0);
+}
+
+/**
+ * _fork - create a new process;
+ * @full_path: the files full path.
+ * @args: arguments for the command
+ * @env: environment variables
+ * @st: status of the child process
+ *
+ * Return: void
+ */
+void _fork(char *full_path, char *args[], char *env[], int *st)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		if (execve(full_path, args, env) == -1)
+		{
+			perror("execve");
+			exit(1);
+		}
+	}
+	else
+	{
+		wait(st);
+	}
+}
+/**
+ * check_keyword - checks for a certain keyword
+ * @args: an array of strings to search for the keyword
+ *
+ * Return: 0 on success else on error
+ */
+int check_keyword(char *args[])
+{
+
+	if (strcmp(args[0], "exit") == 0)
+	{
+		return (0);
+	}
+
+	return (-1);
 }

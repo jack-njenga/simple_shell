@@ -24,7 +24,7 @@ char *search_path(char *cmd)
         }
         else
         {
-	   return (NULL);
+            return (NULL);
         }
     }
 
@@ -70,7 +70,6 @@ int main(void)
         nread = getline(&cmd, &cmd_len, stdin);
         if (nread == -1)
         {
-	    free(cmd);
             write(STDOUT_FILENO, "\n", 1);
             exit(0);
         }
@@ -86,7 +85,6 @@ int main(void)
             }
             if (strcmp(args[0], "exit") == 0)
             {
-		free(cmd);
                 exit(0);
             }
             else if (strcmp(args[0], "env") == 0)
@@ -120,7 +118,6 @@ int main(void)
                 else
                 {
                     perror(args[0]);
-		    free(full_path);
                 }
             }
         }

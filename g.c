@@ -55,3 +55,18 @@ ssize_t _getline(char **buffer, size_t *size, FILE *stream)
     (*buffer)[len] = '\0';
     return (len == 0) ? -1 : len;
 }
+/*
+int main(void)
+{
+	char *buff = NULL;
+	size_t size = 0;
+
+	_getline(&buff, &size, stdin);
+
+	printf("buff has : %s\n", buff);
+	printf("len @ buff : %ld\n", strlen(buff));
+
+	free(buff);
+	return (0);
+}
+*/

@@ -1,6 +1,4 @@
 #include "main.h"
-int check_keyword(char *args[]);
-void _fork(char *full_path, char *args[], char *env[], int *st);
 /**
  * main - Entry point of the program(simple shell)
  *
@@ -8,10 +6,9 @@ void _fork(char *full_path, char *args[], char *env[], int *st);
  */
 int main(void)
 {
-	char *buffer = NULL, *args[64];
+	char *buffer = NULL, *args[64], *fpath, *del = " ";
 	size_t size = 0;
 	int i, status;
-	char *del = " ", *fpath;
 
 	while (true)
 	{
@@ -29,12 +26,8 @@ int main(void)
 			args[i] = strtok(buffer, del);
 			while (args[i] != NULL)
 				args[++i] = strtok(NULL, del);
-
 			if (check_keyword(args) == 0)
-			{
-				free(buffer);
-				exit(0);
-			}
+				free_exit(buffer);
 			else
 			{
 				fpath = check_path(args[0]);
@@ -44,10 +37,7 @@ int main(void)
 					free(fpath);
 				}
 				else
-				{
-					perror(args[0]);
-					free(fpath);
-				}
+					_free(fpath, args[0]);
 			}
 		}
 	}
@@ -102,4 +92,29 @@ int check_keyword(char *args[])
 	}
 
 	return (-1);
+}
+
+/**
+ * _free - frees the fpath memory and prints the error
+ * @fpath: the memory to free
+ * @args: the string to print the error with
+ *
+ * Return: void.
+ */
+void _free(char *fpath, char *args)
+{
+	perror(args);
+	free(fpath);
+}
+
+/**
+ * free_exit - frees the buffer and exits
+ * @buffer: buffer to free
+ *
+ * Return: void
+ */
+void free_exit(char *buffer)
+{
+	free(buffer);
+	exit(0);
 }

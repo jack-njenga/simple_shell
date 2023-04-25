@@ -19,6 +19,6 @@ char *check_path(char *command);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 void _free(char *fpath, char *args);
 void free_exit(char *buffer);
-char *tokenize(char *buffer, char * delim);
+char *tokenize(char *buffer, char *delim);
 
 #endif

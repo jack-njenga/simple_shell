@@ -8,7 +8,7 @@
  * Return: tokenized string
  */
 
-char *tokenize(char *buffer, char * delim)
+char *tokenize(char *buffer, char *delim)
 {
 	int j;
 	static char *str;
@@ -18,7 +18,7 @@ char *tokenize(char *buffer, char * delim)
 		str = buffer;
 			for (; *str != '\0'; str++)
 			{
-				for(j = 0; delim[j] != '\0'; j++)
+				for (j = 0; delim[j] != '\0'; j++)
 				{
 					if (*str == delim[j])
 						break;

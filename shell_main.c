@@ -23,9 +23,9 @@ int main(void)
 		if (strlen(buffer) > 0)
 		{
 			i = 0;
-			args[i] = strtok(buffer, del);
+			args[i] = tokenize(buffer, del);
 			while (args[i] != NULL)
-				args[++i] = strtok(NULL, del);
+				args[++i] = tokenize(NULL, del);
 			if (check_keyword(args) == 0)
 				free_exit(buffer);
 			else

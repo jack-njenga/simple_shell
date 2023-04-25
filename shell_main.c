@@ -26,8 +26,8 @@ int main(void)
 			args[i] = tokenize(buffer, del);
 			while (args[i] != NULL)
 				args[++i] = tokenize(NULL, del);
-			if (check_keyword(args) == 0)
-				free_exit(buffer);
+			if (check_keyword(args, buffer) == 0)
+				free_exit(buffer, 98);
 			else
 			{
 				fpath = check_path(args[0]);
@@ -83,11 +83,17 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
  *
  * Return: 0 on success else on error
  */
-int check_keyword(char *args[])
+int check_keyword(char *args[], char *buffer)
 {
+	int status;
 
 	if (strcmp(args[0], "exit") == 0)
 	{
+		if (args[1] != NULL)
+		{
+			status = atoi(args[1]);
+			free_exit(buffer, status);
+		}
 		return (0);
 	}
 
@@ -110,11 +116,12 @@ void _free(char *fpath, char *args)
 /**
  * free_exit - frees the buffer and exits
  * @buffer: buffer to free
+ * @status: integer passed to exit call
  *
  * Return: void
  */
-void free_exit(char *buffer)
+void free_exit(char *buffer, int status)
 {
 	free(buffer);
-	exit(0);
+	exit(status);
 }

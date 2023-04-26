@@ -1,6 +1,6 @@
 #include "main.h"
 
-/*
+/**
  * tokenize - works like strtok to separate a string using delimiter
  * @buffer: input string to be tokenized
  * @delim: delimiter

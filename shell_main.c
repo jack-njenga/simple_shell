@@ -15,12 +15,13 @@ int main(__attribute__((unused)) int argc, char *argv[])
 
 	while (true)
 	{
-		/*write(STDOUT_FILENO, "cisfun$ ", 8);*/
 		prompt(STDIN_FILENO, bf);
 		if (_getline(&buffer, &size, stdin) == -1)
 		{
 			free(buffer);
-			write(STDOUT_FILENO, "\n", 1);
+			fstat(STDIN_FILENO, &bf);
+			if (S_ISCHR(bf.st_mode))
+				_puts("\n");
 			exit(0);
 		}
 		buffer[strcspn(buffer, "\n")] = '\0';
@@ -70,6 +71,7 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
 	}
 	if (pid == 0)
 	{
+		/*printf("%s (%ld)\n", full_path, strlen(full_path));*/
 		if (execve(full_path, args, env) == -1)
 		{
 			perror("execve");
@@ -125,6 +127,8 @@ void _free(char *fpath, char *ar, char *arg)
 	{
 		_puts("\n");
 	}
+	if (!S_ISCHR(buf.st_mode))
+		_puts("\n");
 	n++;
 	free(fpath);
 }

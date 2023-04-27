@@ -97,7 +97,6 @@ int check_keyword(char *args[], char *buffer)
 			status = atoi(args[1]);
 			free_exit(buffer, status);
 		}
-		exit(0);
 		return (0);
 	}
 

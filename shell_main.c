@@ -115,6 +115,7 @@ void _free(char *fpath, char *ar, char *arg)
 		_puts("\n");
 	n++;
 	free(fpath);
+	exit(127);
 }
 
 /**

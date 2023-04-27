@@ -115,9 +115,16 @@ int check_keyword(char *args[], char *buffer)
 void _free(char *fpath, char *ar, char *arg)
 {
 	static int n = 1;
+	struct stat buf;
+
 	/*perror(ar);*/
 	fprintf(stderr, "%s: %d: %s: not found", ar, n, arg);
-	_puts("\n");
+
+	fstat(STDIN_FILENO, &buf);
+	if (S_ISCHR(buf.st_mode))
+	{
+		_puts("\n");
+	}
 	n++;
 	free(fpath);
 }

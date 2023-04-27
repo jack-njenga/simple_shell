@@ -11,10 +11,12 @@ int main(__attribute__((unused)) int argc, char *argv[])
 	char *buffer = NULL, *args[64], *fpath, *del = " ";
 	size_t size = 0;
 	int i, status;
+	struct stat bf;
 
 	while (true)
 	{
-		write(STDOUT_FILENO, "cisfun$ ", 8);
+		/*write(STDOUT_FILENO, "cisfun$ ", 8);*/
+		prompt(STDIN_FILENO, bf);
 		if (_getline(&buffer, &size, stdin) == -1)
 		{
 			free(buffer);
@@ -39,7 +41,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 					free(fpath);
 				}
 				else
-					_free(fpath, argv[0]);
+					_free(fpath, argv[0], args[0]);
 			}
 		}
 	}
@@ -106,12 +108,17 @@ int check_keyword(char *args[], char *buffer)
  * _free - frees the fpath memory and prints the error
  * @fpath: the memory to free
  * @ar: the string to print the error with
+ * @arg: the command.
  *
  * Return: void.
  */
-void _free(char *fpath, char *ar)
+void _free(char *fpath, char *ar, char *arg)
 {
-	perror(ar);
+	static int n = 1;
+	/*perror(ar);*/
+	fprintf(stderr, "%s: %d: %s: not found", ar, n, arg);
+	_puts("\n");
+	n++;
 	free(fpath);
 }
 

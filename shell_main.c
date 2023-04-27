@@ -46,6 +46,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 void _fork(char *full_path, char *args[], char *env[], int *st)
 {
 	pid_t pid;
+	int ret_exe;
 
 	pid = fork();
 	if (pid == -1)
@@ -55,16 +56,28 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
 	}
 	if (pid == 0)
 	{
-		/*printf("%s (%ld)\n", full_path, strlen(full_path));*/
-		if (execve(full_path, args, env) == -1)
+		ret_exe = execve(full_path, args, env);
+		if (ret_exe == -1)
 		{
+			if (errno == ENOENT)
+				exit(2);
 			perror("execve");
-			exit(1);
+			exit(2);
+		}
+		else if (WIFEXITED(ret_exe) && WEXITSTATUS(ret_exe) != 0)
+		{
+			perror(args[0]);
+			exit(2);
 		}
 	}
 	else
 	{
 		wait(st);
+		if (WIFSIGNALED(*st))
+		{
+			printf("child terminated by signal %d\n", WTERMSIG(*st));
+			exit(2);
+		}
 	}
 }
 /**
@@ -84,6 +97,7 @@ int check_keyword(char *args[], char *buffer)
 			status = atoi(args[1]);
 			free_exit(buffer, status);
 		}
+		exit(0);
 		return (0);
 	}
 

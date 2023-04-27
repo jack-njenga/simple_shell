@@ -10,6 +10,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <ctype.h>
+
 /*structures*/
 
 /*global variable*/
@@ -26,5 +28,6 @@ void free_exit(char *buffer, int status);
 char *tokenize(char *buffer, char *delim);
 void prompt(int fd, struct stat bf);
 void _puts(char *str);
+void process_buffer(char *buffer, char *argv0, int *status);
 
 #endif

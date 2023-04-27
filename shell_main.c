@@ -8,9 +8,9 @@
  */
 int main(__attribute__((unused)) int argc, char *argv[])
 {
-	char *buffer = NULL, *args[64], *fpath, *del = " ";
+	char *buffer = NULL;
 	size_t size = 0;
-	int i, status;
+	int status;
 	struct stat bf;
 
 	while (true)
@@ -27,23 +27,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 		buffer[strcspn(buffer, "\n")] = '\0';
 		if (strlen(buffer) > 0)
 		{
-			i = 0;
-			args[i] = tokenize(buffer, del);
-			while (args[i] != NULL)
-				args[++i] = tokenize(NULL, del);
-			if (check_keyword(args, buffer) == 0)
-				free_exit(buffer, 0);
-			else
-			{
-				fpath = check_path(args[0]);
-				if (fpath != NULL)
-				{
-					_fork(fpath, args, environ, &status);
-					free(fpath);
-				}
-				else
-					_free(fpath, argv[0], args[0]);
-			}
+			process_buffer(buffer, argv[0], &status);
 		}
 	}
 	free(buffer);

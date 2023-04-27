@@ -8,8 +8,8 @@
  */
 char *check_path(char *command)
 {
-	char *path;
-	char *fpath;
+	char *path = NULL;
+	char *fpath = NULL;
 	char *p;
 	char *directory;
 	int len;
@@ -21,6 +21,8 @@ char *check_path(char *command)
 		else
 			return (NULL);
 	}
+	if (access(command, X_OK) == 0)
+		return (strdup(command));
 
 	path = getenv("PATH");
 
@@ -28,6 +30,7 @@ char *check_path(char *command)
 	{
 		return (NULL);
 	}
+	
 	p = path = strdup(path);
 
 	while ((directory = strsep(&p, ":")) != NULL)

@@ -8,10 +8,7 @@
  */
 char *check_path(char *command)
 {
-	char *path = NULL;
-	char *fpath = NULL;
-	char *p;
-	char *directory;
+	char *path = NULL, *p, *fpath = NULL, *directory;
 	int len;
 
 	if (command[0] == '/')
@@ -23,16 +20,14 @@ char *check_path(char *command)
 	}
 	if (access(command, X_OK) == 0)
 		return (strdup(command));
-
 	path = getenv("PATH");
 
 	if (path == NULL)
 	{
 		return (NULL);
 	}
-	
-	p = path = strdup(path);
 
+	p = path = strdup(path);
 	while ((directory = strsep(&p, ":")) != NULL)
 	{
 		len = strlen(directory) + strlen(command) + 2;

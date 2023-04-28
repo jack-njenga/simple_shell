@@ -87,6 +87,7 @@ int check_keyword(char *args[], char *buffer, int *status, char *argv)
 {
 	char *endptr;
 	long val;
+	int ret, i;
 
 	if (strcmp(args[0], "exit") == 0)
 	{
@@ -107,25 +108,32 @@ int check_keyword(char *args[], char *buffer, int *status, char *argv)
 		}
 		return (0);
 	}
-	else if (!strcmp(args[0], "setenv"))
+	if (!strcmp(args[0], "setenv"))
 	{
-		if (args != 3)
+		if (args[1] != NULL && args[2] != NULL)
 		{
-			fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
-			return (1);
+			ret = my_setenv(args[1], args[2]);
 		}
-		my_setenv(args[1], args[2]);
+		else
+		{
+			fprintf(stderr, "Usage: setenv VARIABLE\n");
+		}
+		*status = 0;
+		return (1);
 	}
-	else (!strcmp(args[0], "unsetenv"))
+	if (!strcmp(args[0], "unsetenv"))
 	{
-		if (args != 2)
+		if (args[1])
+		{
+			ret = my_unsetenv(args[1]);
+		}
+		else
 		{
 			fprintf(stderr, "Usage: unsetenv VARIABLE\n");
-			return (1);
 		}
-		my_unsetenv(args[1]);
+		*status = 0;
+		return (1);
 	}
-	return (-1);
 }
 
 /**

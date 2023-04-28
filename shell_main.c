@@ -59,6 +59,7 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
 	}
 	if (pid == 0)
 	{
+		printf("%s\n", full_path);
 		ret_exe = execve(full_path, args, env);
 
 		if (ret_exe == -1)
@@ -81,13 +82,18 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
  *
  * Return: 0 on success else on error
  */
-int check_keyword(char *args[], char *buffer, int *status)
+int check_keyword(char *args[], char *buffer, int *status, char *argv)
 {
 	if (strcmp(args[0], "exit") == 0)
 	{
 		if (args[1] != NULL)
 		{
 			*status = atoi(args[1]);
+			if (*status < atoi("0"))
+			{
+				fprintf(stderr, "%s: %d: illegal number: %d\n", argv, 1, *status);
+				*status = 2;
+			}
 			free_exit(buffer, *status);
 		}
 		return (0);

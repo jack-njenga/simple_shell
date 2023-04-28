@@ -7,7 +7,7 @@
  *
  * Return: void
  */
-void process_buffer(char *buffer, char *argv0, int *status)
+void process_buffer(char *buffer, char *argv, int *status)
 {
 	char *args[64], *fpath, *del = " ";
 	int i;
@@ -20,7 +20,7 @@ void process_buffer(char *buffer, char *argv0, int *status)
 	}
 	while (args[i] != NULL)
 		args[++i] = tokenize(NULL, del);
-	if (check_keyword(args, buffer, status) == 0)
+	if (check_keyword(args, buffer, status, argv) == 0)
 		free_exit(buffer, *status);
 	else
 	{
@@ -31,6 +31,6 @@ void process_buffer(char *buffer, char *argv0, int *status)
 			free(fpath);
 		}
 		else
-			_free(fpath, argv0, args[0], status);
+			_free(fpath, argv, args[0], status);
 	}
 }

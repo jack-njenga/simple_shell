@@ -10,19 +10,20 @@ int main(__attribute__((unused)) int argc, char *argv[])
 {
 	char *buffer = NULL;
 	size_t size = 0;
-	int status;
+	static int status;
 	struct stat bf;
 
 	while (true)
 	{
 		prompt(STDIN_FILENO, bf);
+		fflush(stdout);
 		if (_getline(&buffer, &size, stdin) == -1)
 		{
 			free(buffer);
 			fstat(STDIN_FILENO, &bf);
 			if (S_ISCHR(bf.st_mode))
 				_puts("\n");
-			exit(0);
+			exit(status);
 		}
 		buffer[strcspn(buffer, "\n")] = '\0';
 		if (strlen(buffer) > 0)
@@ -31,7 +32,8 @@ int main(__attribute__((unused)) int argc, char *argv[])
 		}
 	}
 	free(buffer);
-	return (0);
+	printf("status : %d\n", status);
+	return (status);
 }
 
 /**
@@ -46,7 +48,8 @@ int main(__attribute__((unused)) int argc, char *argv[])
 void _fork(char *full_path, char *args[], char *env[], int *st)
 {
 	pid_t pid;
-	int ret_exe;
+	int ret_exe = 0;
+	int status;
 
 	pid = fork();
 	if (pid == -1)
@@ -57,45 +60,35 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
 	if (pid == 0)
 	{
 		ret_exe = execve(full_path, args, env);
+
 		if (ret_exe == -1)
 		{
-			if (errno == ENOENT)
-				exit(2);
 			perror("execve");
-			exit(2);
-		}
-		else if (WIFEXITED(ret_exe) && WEXITSTATUS(ret_exe) != 0)
-		{
-			perror(args[0]);
-			exit(2);
+			exit(1);
 		}
 	}
 	else
 	{
-		wait(st);
-		if (WIFSIGNALED(*st))
-		{
-			printf("child terminated by signal %d\n", WTERMSIG(*st));
-			exit(2);
-		}
+		waitpid(pid, &status, 0);
+		*st = WEXITSTATUS(status);
 	}
 }
 /**
  * check_keyword - checks for a certain keyword
  * @args: an array of strings to search for the keyword
  * @buffer: the buffer to free.
+ * @status: the status of the exit status
+ *
  * Return: 0 on success else on error
  */
-int check_keyword(char *args[], char *buffer)
+int check_keyword(char *args[], char *buffer, int *status)
 {
-	int status;
-
 	if (strcmp(args[0], "exit") == 0)
 	{
 		if (args[1] != NULL)
 		{
-			status = atoi(args[1]);
-			free_exit(buffer, status);
+			*status = atoi(args[1]);
+			free_exit(buffer, *status);
 		}
 		return (0);
 	}
@@ -108,10 +101,11 @@ int check_keyword(char *args[], char *buffer)
  * @fpath: the memory to free
  * @ar: the string to print the error with
  * @arg: the command.
+ * @st: the address of the exit status
  *
  * Return: void.
  */
-void _free(char *fpath, char *ar, char *arg)
+void _free(char *fpath, char *ar, char *arg, int *st)
 {
 	static int n = 1;
 	struct stat buf;
@@ -128,7 +122,7 @@ void _free(char *fpath, char *ar, char *arg)
 		_puts("\n");
 	n++;
 	free(fpath);
-	exit(127);
+	*st = 127;
 }
 
 /**
@@ -140,6 +134,10 @@ void _free(char *fpath, char *ar, char *arg)
  */
 void free_exit(char *buffer, int status)
 {
+	if (buffer == NULL)
+	{
+		buffer = malloc(1);
+	}
 	free(buffer);
 	exit(status);
 }

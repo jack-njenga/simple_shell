@@ -18,12 +18,12 @@
 extern char **environ;
 
 
-int check_keyword(char *args[], char *buffer);
+int check_keyword(char *args[], char *buffer, int *status);
 void _fork(char *full_path, char *args[], char *env[], int *st);
 int argument(char *buffer, char *dell, char *envp[]);
 char *check_path(char *command);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
-void _free(char *fpath, char *ar, char *arg);
+void _free(char *fpath, char *ar, char *arg, int *st);
 void free_exit(char *buffer, int status);
 char *tokenize(char *buffer, char *delim);
 void prompt(int fd, struct stat bf);

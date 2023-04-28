@@ -15,10 +15,7 @@ char *check_path(char *command)
 	{
 		if (access(command, X_OK) == 0)
 			return (strdup(command));
-		else
-		{
-			return (NULL);
-		}
+		return (NULL);
 	}
 	if (access(command, X_OK) == 0)
 		return (strdup(command));

@@ -20,8 +20,8 @@ void process_buffer(char *buffer, char *argv0, int *status)
 	}
 	while (args[i] != NULL)
 		args[++i] = tokenize(NULL, del);
-	if (check_keyword(args, buffer) == 0)
-		free_exit(buffer, 0);
+	if (check_keyword(args, buffer, status) == 0)
+		free_exit(buffer, *status);
 	else
 	{
 		fpath = check_path(args[0]);
@@ -31,6 +31,6 @@ void process_buffer(char *buffer, char *argv0, int *status)
 			free(fpath);
 		}
 		else
-			_free(fpath, argv0, args[0]);
+			_free(fpath, argv0, args[0], status);
 	}
 }

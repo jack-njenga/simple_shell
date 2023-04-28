@@ -2,7 +2,7 @@
 /**
  * process_buffer - processes the buffer
  * @buffer: buffer to process
- * @argv0: first argument
+ * @argv: first argument
  * @status: status pointer
  *
  * Return: void

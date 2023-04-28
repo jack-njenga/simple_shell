@@ -79,6 +79,7 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
  * @args: an array of strings to search for the keyword
  * @buffer: the buffer to free.
  * @status: the status of the exit status
+ * @argv: argument vector.
  *
  * Return: 0 on success else on error
  */

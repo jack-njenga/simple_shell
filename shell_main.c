@@ -88,12 +88,11 @@ int check_keyword(char *args[], char *buffer, int *status, char *argv)
 	char *endptr;
 	long val;
 
-	val = strtol(args[1], &endptr, 10);
-
 	if (strcmp(args[0], "exit") == 0)
 	{
 		if (args[1] != NULL)
 		{
+			val = strtol(args[1], &endptr, 10);
 			if (endptr == args[1] || *endptr != '\0' || val < 0)
 			{
 				fprintf(stderr, "%s: %d: %s: Illegal number: %s\n",

@@ -21,7 +21,9 @@ void process_buffer(char *buffer, char *argv, int *status)
 	while (args[i] != NULL)
 		args[++i] = tokenize(NULL, del);
 	if (check_keyword(args, buffer, status, argv) == 0)
+	{
 		free_exit(buffer, *status);
+	}
 	else
 	{
 		fpath = check_path(args[0]);

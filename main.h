@@ -29,5 +29,7 @@ char *tokenize(char *buffer, char *delim);
 void prompt(int fd, struct stat bf);
 void _puts(char *str);
 void process_buffer(char *buffer, char *argv, int *status);
+int my_setenv(const char *name, const char *value);
+int my_unsetenv(const char *name);
 
 #endif

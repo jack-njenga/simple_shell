@@ -107,6 +107,24 @@ int check_keyword(char *args[], char *buffer, int *status, char *argv)
 		}
 		return (0);
 	}
+	else if (!strcmp(args[0], "setenv"))
+	{
+		if (args != 3)
+		{
+			fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
+			return (1);
+		}
+		my_setenv(args[1], args[2]);
+	}
+	else (!strcmp(args[0], "unsetenv"))
+	{
+		if (args != 2)
+		{
+			fprintf(stderr, "Usage: unsetenv VARIABLE\n");
+			return (1);
+		}
+		my_unsetenv(args[1]);
+	}
 	return (-1);
 }
 

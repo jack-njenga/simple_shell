@@ -27,7 +27,7 @@ void process_buffer(char *buffer, char *argv, int *status)
 	}
 	if (ret == 1)
 	{
-		
+
 	}
 	else
 	{

@@ -1,5 +1,13 @@
 #include "main.h"
 
+/**
+ * my_setenv - function that sets env
+ * @nm: name
+ * @val: value
+ *
+ * Return: -1 on failure 0 on success
+ */
+
 int my_setenv(const char *nm, const char *val)
 {
 	int ret;
@@ -19,6 +27,13 @@ int my_setenv(const char *nm, const char *val)
 
 	return (0);
 }
+
+/**
+ * my_unsetenv - function that unsets env
+ * @nm: name
+ *
+ * Return: -1 on failure 0 on success
+ */
 
 int my_unsetenv(const char *nm)
 {

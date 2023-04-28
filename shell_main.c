@@ -85,21 +85,29 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
  */
 int check_keyword(char *args[], char *buffer, int *status, char *argv)
 {
+	char *endptr;
+	long val;
+
+	val = strtol(args[1], &endptr, 10);
+
 	if (strcmp(args[0], "exit") == 0)
 	{
 		if (args[1] != NULL)
 		{
-			*status = atoi(args[1]);
-			if (*status < atoi("0"))
+			if (endptr == args[1] || *endptr != '\0' || val < 0)
 			{
-				fprintf(stderr, "%s: %d: illegal number: %d\n", argv, 1, *status);
+				fprintf(stderr, "%s: %d: %s: Illegal number: %s\n",
+						argv, 1, args[0], args[1]);
 				*status = 2;
 			}
-			free_exit(buffer, *status);
+			else
+			{
+				*status = atoi(args[1]);
+				free_exit(buffer, *status);
+			}
 		}
 		return (0);
 	}
-
 	return (-1);
 }
 

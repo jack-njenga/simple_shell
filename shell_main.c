@@ -59,7 +59,7 @@ void _fork(char *full_path, char *args[], char *env[], int *st)
 	}
 	if (pid == 0)
 	{
-		printf("%s\n", full_path);
+		/*printf("%s\n", full_path);*/
 		ret_exe = execve(full_path, args, env);
 
 		if (ret_exe == -1)
